@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>サー活の回答</title>
+
+<style>
+
+body{
+    margin:0;
+    background:url("サー活用3.png") center/cover no-repeat fixed;
+    overflow:hidden;
+}
+
+#stage{
+    position:absolute;
+    width:1920px;
+    height:1080px;
+    left:50%;
+    top:50%;
+    transform-origin:center;
+}
+
+#bg{
+    position:absolute;
+    width:1920px;
+    height:1080px;
+    background:url("サー活用4.png") center/contain no-repeat;
+}
+
+.text{
+    position:absolute;
+    color:#444444;
+    font-family:sans-serif;
+    text-align:center;
+}
+
+/* 制約 主義 */
+.info{
+    font-size:36px;
+}
+
+/* 問い */
+#question{
+    font-size:40px;
+    font-weight:bold;
+}
+
+/* 中央揃え */
+#seiyaku{
+    top:150px;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+#shugi{
+    top:200px;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+#question{
+    top:260px;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+/* 回答欄 */
+textarea{
+    position:absolute;
+
+    top:415px;
+    left:50%;
+    transform:translateX(-50%);
+
+    width:670px;
+    height:650px; /* 下側まで伸ばした */
+
+    font-size:31px;
+    color:#444444;
+
+    border:none;
+    outline:none;
+    background:transparent;
+
+    resize:none;
+}
+
+/* プレースホルダー */
+textarea::placeholder{
+    color:#000000;
+    opacity:0.6;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="stage">
+
+<div id="bg"></div>
+
+<div id="seiyaku" class="text info">制約：---</div>
+<div id="shugi" class="text info">主義：---</div>
+
+<div id="question" class="text">---</div>
+
+<textarea placeholder="回答を入力"></textarea>
+
+</div>
+
+<script>
+
+/* 画面サイズに合わせて拡大 */
+function resize(){
+
+    const stage=document.getElementById("stage");
+
+    const scale=Math.min(
+        window.innerWidth/1920,
+        window.innerHeight/1080
+    );
+
+    stage.style.transform =
+        "translate(-50%,-50%) scale("+scale+")";
+}
+
+window.addEventListener("resize",resize);
+resize();
+
+/* 制約と主義の取得 */
+
+const seiyaku =
+localStorage.getItem("sa-katsu-seiyaku") || "---";
+
+const shugi =
+localStorage.getItem("sa-katsu-shugi") || "---";
+
+document.getElementById("seiyaku").textContent =
+"制約：" + seiyaku;
+
+document.getElementById("shugi").textContent =
+"主義：" + shugi;
+
+/* 問い */
+
+const questions = [
+"人はなぜ勉強するのか？",
+"正義とは何か？",
+"ルールはなぜ守るべきか？",
+"自由とは何か？",
+"幸せとは何か？",
+"知識とは何か？"
+];
+
+const randomQuestion =
+questions[Math.floor(Math.random()*questions.length)];
+
+document.getElementById("question").textContent =
+randomQuestion;
+
+</script>
+
+</body>
+</html>

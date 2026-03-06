@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>哲学スロット</title>
+
+<style>
+
+body{
+    margin:0;
+    padding:0;
+    font-family:sans-serif;
+    background:url("サー活用3.png") center/cover no-repeat fixed;
+}
+
+/* 中央コンテナ（1920×1080基準） */
+.main{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:1920px;
+    height:1080px;
+
+    transform-origin:center center;
+    transform:translate(-50%,-50%) scale(1);
+
+    background:url("サー活用2.png") center/contain no-repeat;
+}
+
+/* スロット文字 */
+.slot{
+    position:absolute;
+    top:47.5%;
+    font-size:36px;
+    color:#444444;
+
+    width:400px;
+    height:50px;
+    overflow:hidden;
+    text-align:center;
+}
+
+/* 制約 */
+#slot-seiyaku{
+    left:36.5%;
+    transform:translateX(-50%);
+}
+
+/* 主義 */
+#slot-shugi{
+    left:69%;
+    transform:translateX(-50%);
+}
+
+/* スロット内部 */
+.slot-list{
+    position:absolute;
+    width:100%;
+}
+
+.slot-item{
+    height:50px;
+    line-height:50px;
+}
+
+/* ボタン */
+.btn-area{
+    position:absolute;
+    top:65%;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+button{
+    font-size:20px;
+    padding:10px 20px;
+    margin:10px;
+    border-radius:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="main" id="main">
+
+<div class="slot" id="slot-seiyaku">
+<div class="slot-list"></div>
+</div>
+
+<div class="slot" id="slot-shugi">
+<div class="slot-list"></div>
+</div>
+
+<div class="btn-area">
+<button id="spin">回す</button>
+<button id="next">次へ</button>
+</div>
+
+</div>
+
+<script>
+
+/* 画像と同じ倍率で拡大縮小 */
+function resize(){
+
+const baseWidth=1920;
+const baseHeight=1080;
+
+const scale=Math.min(
+window.innerWidth/baseWidth,
+window.innerHeight/baseHeight
+);
+
+const main=document.getElementById("main");
+
+main.style.transform=
+`translate(-50%,-50%) scale(${scale})`;
+
+}
+
+window.addEventListener("resize",resize);
+resize();
+
+
+const seiyakuList=[
+"差異を用いず語れ",
+"否定表現を用いず語れ",
+"最大限の充足を前提に語れ",
+"感情論を用いず語れ",
+"絶対的確実性を前提として語れ",
+"因果表現を用いず語れ"
+];
+
+const shugiList=[
+"相対主義",
+"虚無主義",
+"禁欲主義",
+"快楽主義",
+"懐疑主義",
+"合理主義"
+];
+
+let finalSeiyaku="---";
+let finalShugi="---";
+
+
+function spinSlot(list,element,callback){
+
+const slotList=element.querySelector(".slot-list");
+
+let html="";
+for(let i=0;i<30;i++){
+const item=list[Math.floor(Math.random()*list.length)];
+html+=`<div class="slot-item">${item}</div>`;
+}
+
+slotList.innerHTML=html;
+
+let pos=0;
+let speed=40;
+
+const interval=setInterval(()=>{
+
+pos+=speed;
+slotList.style.top=-pos+"px";
+
+speed*=0.96;
+
+if(speed<1){
+
+clearInterval(interval);
+
+const final=list[Math.floor(Math.random()*list.length)];
+
+slotList.innerHTML=`<div class="slot-item">${final}</div>`;
+slotList.style.top="0px";
+
+callback(final);
+
+}
+
+},20);
+
+}
+
+
+document.getElementById("spin").onclick=()=>{
+
+spinSlot(seiyakuList,document.getElementById("slot-seiyaku"),(r)=>{
+finalSeiyaku=r;
+});
+
+setTimeout(()=>{
+spinSlot(shugiList,document.getElementById("slot-shugi"),(r)=>{
+finalShugi=r;
+});
+},400);
+
+};
+
+
+document.getElementById("next").onclick=()=>{
+localStorage.setItem("sa-katsu-seiyaku",finalSeiyaku);
+localStorage.setItem("sa-katsu-shugi",finalShugi);
+location.href="サー活の回答.html";
+};
+
+</script>
+
+</body>
+</html>
