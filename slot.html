@@ -32,7 +32,6 @@ background:url("サー活用2.png") center/contain no-repeat;
 .slot{
 
 position:absolute;
-
 top:47.5%;
 
 font-size:36px;
@@ -65,7 +64,6 @@ transform:translateX(-50%);
 .slot-list{
 
 position:absolute;
-
 width:100%;
 
 }
@@ -82,21 +80,30 @@ line-height:50px;
 position:absolute;
 
 top:65%;
-left:50%;
+left:52%;
 
 transform:translateX(-50%);
+
+display:flex;
+justify-content:center;
+align-items:center;
 
 }
 
 button{
 
-font-size:20px;
+font-size:60px;
+font-weight:bold;
 
-padding:10px 20px;
+padding:10px 30px;
+margin:20px;
 
-margin:10px;
+border:none;
+background:none;
 
-border-radius:10px;
+color:#444444;
+
+cursor:pointer;
 
 }
 
@@ -118,7 +125,7 @@ border-radius:10px;
 <div class="btn-area">
 
 <button id="spin">回す</button>
-<button id="next">次へ</button>
+<button id="next" disabled style="opacity:0.6;">次へ</button>
 
 </div>
 
@@ -216,6 +223,11 @@ callback(final);
 
 
 document.getElementById("spin").onclick=()=>{
+
+const nextBtn=document.getElementById("next");
+
+nextBtn.disabled=false;
+nextBtn.style.opacity=1;
 
 spinSlot(
 seiyakuList,
